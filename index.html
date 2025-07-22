@@ -14,8 +14,9 @@
     header {
       background-color: #00796B;
       color: white;
-      padding: 1rem;
+      padding: 1.5rem 1rem 1rem;
       text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     .logo-container {
       display: flex;
@@ -34,41 +35,38 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     nav a {
       background: white;
-      border: 1px solid #00796B;
+      border: 2px solid #00796B;
       color: #00796B;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
       text-decoration: none;
       font-weight: bold;
-      transition: 0.2s;
+      transition: 0.3s;
     }
-    nav a:hover {
+    nav a:hover, nav a.active {
       background-color: #004D40;
       color: white;
-    }
-    nav a.active {
-      background-color: #004D40;
-      color: white;
+      transform: scale(1.05);
     }
     #products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
+      gap: 25px;
+      padding: 30px 50px;
     }
     .product {
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       overflow: hidden;
-      transition: 0.3s;
+      transition: transform 0.3s;
     }
     .product:hover {
-      transform: scale(1.02);
+      transform: translateY(-5px);
     }
     .product img {
       width: 100%;
@@ -76,23 +74,28 @@
       object-fit: contain;
       padding: 1rem;
       cursor: pointer;
-      transition: 0.3s ease;
     }
     .product-info {
-      padding: 1rem;
+      padding: 1rem 1.5rem 1.5rem;
+      text-align: center;
     }
     .product-info h3 {
       margin: 0 0 0.5rem;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .product-info p {
+      margin: 0.25rem 0;
+      color: #555;
     }
     footer {
       text-align: center;
       padding: 1rem;
       background: #00796B;
       color: white;
+      margin-top: 50px;
     }
 
-    /* Modal Styles */
     .modal {
       display: none;
       position: fixed;
@@ -147,7 +150,6 @@
     <p>&copy; 2025 Home Care by SARMAYA</p>
   </footer>
 
-  <!-- Image Modal -->
   <div id="image-preview-modal" class="modal" onclick="closePreview()">
     <span class="close-btn" onclick="closePreview()">&times;</span>
     <img class="modal-content" id="preview-image">
