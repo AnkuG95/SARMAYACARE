@@ -113,12 +113,7 @@
   <script>
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzAjq4RV5jBLJweSP1w5z0rcpihxiFrM5tn8enzOYyfN-5Pu6u59EcE9sFejUqyLnWh/exec';
 
-    function fixDriveUrl(url) {
-      if (!url || typeof url !== 'string') return '';
-      const match = url.match(/[-\w]{25,}/);
-      const direct = match ? `https://drive.google.com/uc?export=view&id=${match[0]}` : '';
-      return direct;
-    }
+    
 
     function loadCategory(event, sheetName) {
       document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
@@ -139,17 +134,17 @@
     function renderProducts(products) {
       const container = document.getElementById('products');
       container.innerHTML = '';
-
+    
       products.forEach(p => {
-        let imageUrl = fixDriveUrl(p['Pic URL 1']);
-        if (!imageUrl) {
-          imageUrl = 'placeholder.jpg';
+        let imageUrl = p['Pic URL 1'];
+        if (!imageUrl || imageUrl.trim() === '') {
+          imageUrl = 'placeholder.jpg'; // fallback if no image
         }
-
+    
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-          <img src="${imageUrl}" alt="${p['Product Name']}" loading="lazy">
+          <img src="${imageUrl}" alt="${p['Product Name']}" loading="lazy" onerror="this.src='placeholder.jpg'">
           <div class="product-info">
             <h3>${p['Product Name']}</h3>
             <p>Quantity: ${p['Quantity Available']}</p>
@@ -159,6 +154,7 @@
         container.appendChild(div);
       });
     }
+    
 
     window.onload = () => loadSheet('DishwashLiquid');
   </script>
