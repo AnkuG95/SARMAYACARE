@@ -8,7 +8,7 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f4f4;
     }
     header {
@@ -25,8 +25,9 @@
       flex-wrap: wrap;
     }
     .logo-container img {
-      height: 50px;
+      height: 60px;
       width: auto;
+      border-radius: 5px;
     }
     nav {
       display: flex;
@@ -43,8 +44,13 @@
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
+      transition: 0.2s;
     }
     nav a:hover {
+      background-color: #004D40;
+      color: white;
+    }
+    nav a.active {
       background-color: #004D40;
       color: white;
     }
@@ -66,30 +72,61 @@
     }
     .product img {
       width: 100%;
-      height: 200px;
-      object-fit: cover;
+      height: 250px;
+      object-fit: contain;
+      padding: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
     }
     .product-info {
       padding: 1rem;
     }
     .product-info h3 {
       margin: 0 0 0.5rem;
+      font-size: 1.1rem;
     }
     footer {
       text-align: center;
       padding: 1rem;
       background: #00796B;
       color: white;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
       position: fixed;
+      z-index: 9999;
+      padding-top: 50px;
+      left: 0;
+      top: 0;
       width: 100%;
-      bottom: 0;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 10px;
+    }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo-container">
-      <img src="https://ankug95.github.io/SARMAYACARE/images/SARMAYA LOGO.jpg" alt="Logo">
+      <img src="https://ankug95.github.io/SARMAYACARE/images/SARMAYA%20LOGO.jpg" alt="Logo">
       <h1>SARMAYA</h1>
     </div>
     <nav>
@@ -110,10 +147,14 @@
     <p>&copy; 2025 Home Care by SARMAYA</p>
   </footer>
 
+  <!-- Image Modal -->
+  <div id="image-preview-modal" class="modal" onclick="closePreview()">
+    <span class="close-btn" onclick="closePreview()">&times;</span>
+    <img class="modal-content" id="preview-image">
+  </div>
+
   <script>
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzAjq4RV5jBLJweSP1w5z0rcpihxiFrM5tn8enzOYyfN-5Pu6u59EcE9sFejUqyLnWh/exec';
-
-    
 
     function loadCategory(event, sheetName) {
       document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
@@ -134,17 +175,16 @@
     function renderProducts(products) {
       const container = document.getElementById('products');
       container.innerHTML = '';
-    
       products.forEach(p => {
         let imageUrl = p['Pic URL 1'];
         if (!imageUrl || imageUrl.trim() === '') {
-          imageUrl = 'placeholder.jpg'; // fallback if no image
+          imageUrl = 'placeholder.jpg';
         }
-    
+
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-          <img src="${imageUrl}" alt="${p['Product Name']}" loading="lazy" onerror="this.src='placeholder.jpg'">
+          <img src="${imageUrl}" alt="${p['Product Name']}" loading="lazy" onclick="openPreview('${imageUrl}')" onerror="this.src='placeholder.jpg'">
           <div class="product-info">
             <h3>${p['Product Name']}</h3>
             <p>Quantity: ${p['Quantity Available']}</p>
@@ -154,7 +194,17 @@
         container.appendChild(div);
       });
     }
-    
+
+    function openPreview(src) {
+      const modal = document.getElementById("image-preview-modal");
+      const img = document.getElementById("preview-image");
+      img.src = src;
+      modal.style.display = "block";
+    }
+
+    function closePreview() {
+      document.getElementById("image-preview-modal").style.display = "none";
+    }
 
     window.onload = () => loadSheet('DishwashLiquid');
   </script>
